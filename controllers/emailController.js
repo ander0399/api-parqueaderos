@@ -1,5 +1,7 @@
 const emailService = require('../utils/emailSimulations.js');
 
+
+//enviar email
 exports.send = async (req, res) => {
   try {
     const { email, licensePlate, message, parkingName } = req.body;

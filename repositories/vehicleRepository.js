@@ -1,5 +1,5 @@
-const Vehicle = require('../models/vehicleModel');
-
+const Vehicle = require('../config/db');
+const Parking = require("../config/db");
 
 
 //registrar vehiculo
@@ -7,19 +7,23 @@ exports.registerVehicleEntry = async (licensePlate, parkingId, entryTime) => {
     await Vehicle.create({ licensePlate,entryTime, parkingId });
   };
 
+//obtener vehiculo de un parqueadero
 exports.getVehiclesByParkingId = async (parkingId) => {
     return await Vehicle.findAll({ where: { parkingId } });
 };
 
+//obtener vehiculo por placa
 exports.findVehicleByLicensePlate = async (licensePlate) => {
     return await Vehicle.findOne({ where: { licensePlate } });
 };
 
-//encontrar un vehiculo en un parqueadero con la placa
+//obtener un vehiculo en un parqueadero con la placa
 exports.findVehicleByLicensePlateAndParkingId = async (licensePlate, parkingId) => {
     return await Vehicle.findOne({ where: { licensePlate, parkingId } });
   };
   
+
+//salida de vehiculo (pendiente)
   exports.registerVehicleExit = async (vehicle) => {
     // Mover el vehículo al historial con la fecha de salida
     return await vehicle.destroy();

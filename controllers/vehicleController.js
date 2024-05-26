@@ -1,14 +1,5 @@
 const vehicleService = require('../services/vehicleService');
 
-//obtener todos los vehiculos
-exports.getAllVehicles = async (req, res) => {
-  try {
-    const vehicles = await vehicleService.getAllVehicles();
-    res.json(vehicles);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
 
 //obtener vehiculo por id
 exports.getVehicleById = async (req, res) => {
@@ -26,27 +17,27 @@ exports.getVehicleById = async (req, res) => {
 
 //registrar entrada de un vehiculo
 exports.registerVehicleEntry = async (req, res) => {
-    try {
-      const { licensePlate, parkingId } = req.body;
-      await vehicleService.registerVehicleEntry(licensePlate, parkingId);
-      res.status(201).json({ message: 'Registro de vehiculo exitoso' });
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  };
+  try {
+    const { licensePlate, parkingId } = req.body;
+    await vehicleService.registerVehicleEntry(licensePlate, parkingId);
+    res.status(201).json({ message: 'Registro de vehiculo exitoso' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 
 
 //registrar salida de un vehiculo
 exports.registerVehicleExit = async (req, res) => {
-    try {
-      const { licensePlate, parkingId } = req.body;
-      const vehicle = await vehicleService.registerVehicleExit(licensePlate, parkingId);
-      res.json({ message: 'Salida registrada', vehicle });
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  };
+  try {
+    const { licensePlate, parkingId } = req.body;
+    const vehicle = await vehicleService.registerVehicleExit(licensePlate, parkingId);
+    res.json({ message: 'Salida registrada', vehicle });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 
 
@@ -63,8 +54,9 @@ exports.registerVehicleExit = async (req, res) => {
 exports.getVehiclesByParkingId = async (req, res) => {
   try {
     const { parkingId } = req.params;
-    const vehicles = await vehicleService.getVehiclesByParkingId(parkingId);
-    res.json(vehicles);
+    const userId = req.query.userId;
+    const vehicles = await vehicleService.getVehiclesByParkingId(parkingId, userId);
+    res.status(201).json(vehicles);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -72,15 +64,15 @@ exports.getVehiclesByParkingId = async (req, res) => {
 
 
 //obtener detalles de un vehiculo en un parqueadero
-  exports.getVehicleDetailByParkingId = async (req, res) => {
-    try {
-      const { parkingId, vehicleId } = req.params;
-      const vehicle = await vehicleService.getVehicleDetailByParkingId(parkingId, vehicleId);
-      if (!vehicle) {
-        return res.status(404).json({ message: 'Vehiculo no encontrado' });
-      }
-      res.json(vehicle);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
+exports.getVehicleDetailByParkingId = async (req, res) => {
+  try {
+    const { parkingId, vehicleId } = req.params;
+    const vehicle = await vehicleService.getVehicleDetailByParkingId(parkingId, vehicleId);
+    if (!vehicle) {
+      return res.status(404).json({ message: 'Vehiculo no encontrado' });
     }
-  };
+    res.status(201).json(vehicle);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

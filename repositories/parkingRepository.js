@@ -1,4 +1,4 @@
-const Parking = require('../models/parkingModel');
+const Parking = require('../config/db');
 
 
 //crear un parqueadero
@@ -52,14 +52,19 @@ exports.assignParkingToSocio = async (parkingId, userId) => {
 //cuantos vehiculos hay en el parqueadero
 exports.getVehiclesCountByParkingId = async (parkingId) => {
     return await Vehicle.count({ where: { parkingId } });
-  };
+};
 
 //incrementar capacidad del parqueadero
 exports.increaseParkingCapacity = async (parkingId) => {
-  await Parking.increment('capacity', { where: { id: parkingId } });
+    await Parking.increment('capacity', { where: { id: parkingId } });
 };
 
 //decrementar capacidad del parqueadero
 exports.decreaseParkingCapacity = async (parkingId) => {
-  await Parking.decrement('capacity', { where: { id: parkingId } });
+    await Parking.decrement('capacity', { where: { id: parkingId } });
 };
+
+//todos los parqueaderos de un socio
+exports.getParkingsByUserId = async (userId) => {
+    return await Parking.findAll({ where: { userId } });
+}

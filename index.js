@@ -23,7 +23,7 @@ async function loadDB() {
 
 
 
-conn.sync({ force: true }).then(async () => {
+conn.sync({ force: false }).then(async () => {
   loadDB();
   console.log("base de datos conectada!");
   server.listen(process.env.PORT, () => {

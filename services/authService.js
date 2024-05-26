@@ -8,16 +8,15 @@ const userRepository = require('../repositories/userRepository');
 exports.login = async (email, password) => {
     const user = await userRepository.findByEmail(email);
     if (!user) {
-        throw new Error('Usuario no encontrado');
+       return'Usuario no encontrado';
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-        throw new Error('Contraseña incorrecta');
+        return'Contraseña incorrecta';
     }
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '6h' });
     return token;
 };
-
 
 //registrar socio
 exports.register = async (email, password, role) => {
@@ -26,3 +25,13 @@ exports.register = async (email, password, role) => {
     const user = await userRepository.createUser(email, hashedPassword, role);
     return user;
 };
+
+//logout de usuario (eliminar token en el localstorage)
+exports.logout = async()=>{
+    return "sesion cerrada";
+}
+
+//obtener usuario por id
+exports.userById = async(id)=>{
+    return userRepository.getUserById(id);
+}
