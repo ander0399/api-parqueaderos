@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const { isAuthenticated, isAdmin } = require('../middlewares/authMiddleware');
 
 // Endpoints de autenticación
-router.post('/login', authController.login); //iniciar sesion 
-router.post('/logout',authMiddleware.isAuthenticated, authController.logout); // cerrar sesion
-router.post('/register', authMiddleware.isAdmin, authController.register); // registrar/crear socio
+
+// iniciar sesion
+router.post('/login', authController.login); 
+// // cerrar sesion 
+router.post('/logout', isAuthenticated, authController.logout); 
+// (admin) registrar/crear socio
+router.post('/register', isAuthenticated, isAdmin, authController.register); 
 
 module.exports = router;

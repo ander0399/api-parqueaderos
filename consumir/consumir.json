@@ -153,6 +153,12 @@
             "capacity": "100",
             "costPerHour": "4000",
             "userId": 4
+           },
+           {
+            "id": 5,
+            "name": "Parqueadero 5",
+            "capacity": "1",
+            "costPerHour": "3000"
            }
     ]
 }

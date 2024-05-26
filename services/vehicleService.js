@@ -8,12 +8,13 @@ const historyRepository = require('../repositories/historyRepository');
 exports.registerVehicleEntry = async (req, res) => {
     try {
         const { licensePlate, parkingId } = req.body;
-        const entryTime = new Date();
+        const entryTime = new Date().toTimeString().split(' ')[0];
+        console.log("hora actual: ", entryTime);
 
         // Verificar si la placa ya está registrada en algún parqueadero
         const existingVehicle = await vehicleRepository.findVehicleByLicensePlate(licensePlate);
         if (existingVehicle) {
-            res.status(400).json({ message: 'Vehiculo ya esta en el parqueadero' });
+             res.status(400).json({ message: 'Vehiculo ya esta en el parqueadero' });
         }
 
         // Verificar si el parqueadero tiene capacidad disponible

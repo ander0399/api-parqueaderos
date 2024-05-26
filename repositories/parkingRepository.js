@@ -1,4 +1,4 @@
-const {Parking} = require('../config/db');
+const { Parking } = require('../config/db');
 
 
 //crear un parqueadero
@@ -17,36 +17,15 @@ exports.getParkingById = async (id) => {
 };
 
 //actualizar parqueadero
-exports.updateParking = async (id, data) => {
-    const parking = await Parking.findByPk(id);
-    if (!parking) {
-        return null;
-    }
-    return await parking.update({name:data.name},{capacity:data.capacity},{costPerHour:data.costPerHour});
+exports.updateParking = async (parking) => {
+    var values = { name: parking.name, capacity:parking.capacity,costPerHour:parking.costPerHour,userId:parking.userId};
+    var condition = { where: { id: parking.id } };
+    return await Parking.update(values,condition);
 };
 
 //borrar parqueadero
 exports.deleteParking = async (id) => {
-    const parking = await Parking.findByPk(id);
-    if (!parking) {
-        return null;
-    }
-    return await parking.destroy();
-};
-
-//asignar parqueadero a un socio
-exports.assignParkingToSocio = async (parkingId, userId) => {
-    const parking = await parkingRepository.getParkingById(parkingId);
-    if (!parking) {
-        return 'Parqueadero no encontrado';
-    }
-    const user = await userRepository.getUserById(userId);
-    if (!user || user.role !== 'SOCIO') {
-        return 'Usuario no encontrado o no es un SOCIO';
-    }
-    parking.userId = userId;
-    await parking.save();
-    return parking;
+    return await Parking.destroy({ where: { id } });
 };
 
 //cuantos vehiculos hay en el parqueadero
@@ -67,4 +46,9 @@ exports.decreaseParkingCapacity = async (parkingId) => {
 //todos los parqueaderos de un socio
 exports.getParkingsByUserId = async (userId) => {
     return await Parking.findAll({ where: { userId } });
+}
+
+//cupo en el parqueadero
+exports.checkCapacity = async (parkingId) => {
+    return await Parking.capacity;
 }

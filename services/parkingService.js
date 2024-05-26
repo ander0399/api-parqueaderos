@@ -1,5 +1,6 @@
 const parkingRepository = require('../repositories/parkingRepository');
-const userRepository = require('../repositories/userRepository'); 
+const userRepository = require('../repositories/userRepository');
+const vehicleRepository = require("../repositories/vehicleRepository");
 
 
 //crear un parqueadero
@@ -15,7 +16,7 @@ exports.getAllParkings = async () => {
 //obtener parqueaderos asignados a un socio
 exports.getParkingsByUserId = async (userId) => {
   const parkings = await parkingRepository.getParkingsByUserId(userId);
-  if(parkings) return parkings;
+  if (parkings) return parkings;
   return "no tiene parqueaderos";
 };
 
@@ -25,37 +26,61 @@ exports.getParkingById = async (id) => {
 };
 
 //actualizar un parqueadero
-exports.updateParking = async (id, data) => {
-    const vehiclesCount = await vehicleRepository.getVehiclesCountByParkingId(id);
-  if (vehiclesCount > 0) {
-    return'Parqueadero no puede ser actualizado porque aun tiene vehiculos';
+exports.updateParking = async (id, name, capacity, costPerHour) => {
+  if (id && name && capacity && costPerHour) {
+    let parking = await parkingRepository.getParkingById(id);
+    parking.name = name;
+    parking.capacity = capacity;
+    parking.costPerHour = costPerHour;
+    if (parking) {
+      await parkingRepository.updateParking(parking);
+      return "parqueadero actualizado";
+    } else {
+      return "parqueadero no encontrado";
+    }
+  } else {
+    return "faltan datos";
   }
-  return await parkingRepository.updateParking(id, data);
 };
 
 //borrar un parqueadero
 exports.deleteParking = async (id) => {
- const vehiclesCount = await vehicleRepository.getVehiclesCountByParkingId(id);
-  if (vehiclesCount > 0) {
-    return'Parqueadero no puede ser borrado porque aun tiene vehiculos';
+  const parking = parkingRepository.getParkingById(id);
+  const vehiclesCount = await vehicleRepository.getVehiclesCountByParkingId(id);
+  if (parking) {
+    if (vehiclesCount > 0) {
+      return 'Parqueadero no puede ser borrado porque aun tiene vehiculos';
+    } else {
+      await parkingRepository.deleteParking(id);
+      return "borrado";
+    }
+  } else {
+    return "Parqueadero no encontrado";
   }
-  await parkingRepository.deleteParking(id);
 };
 
 
 //asignar un parqueadero a un socio
-exports.assignParkingToSocio = async (parkingId, userId) => {
+exports.assignParkingToSocio = async (parkingId, userEmail) => {
   const parking = await parkingRepository.getParkingById(parkingId);
-  if (!parking) {
-    return 'Parqueadero no encontrado';
+  if (parking) {
+    const user = await userRepository.findByEmail(userEmail);
+    if (!user || user.role !== 'SOCIO') {
+      return 'Usuario no encontrado o no es un SOCIO';
+    } else {
+      parking.userId = user.id;
+      const parkingUpdate = await parkingRepository.updateParking(parking);
+      console.log(parkingUpdate)
+      return "parqueadero asignado correctamente";
+    }
   }
-  const user = await userRepository.getUserById(userId);
-  if (!user || user.role !== 'SOCIO') {
-    return 'Usuario no encontrado o no es un SOCIO';
-  }
-  parking.userId = userId;
-  await parking.save();
-  return parking;
+  return 'Parqueadero no encontrado';
+};
+
+
+//obtener la capacidad del parqueadero
+exports.checkCapacityAvailable = async (parkingId) => {
+  return await parkingRepository.checkCapacity(parkingId);
 };
 
 

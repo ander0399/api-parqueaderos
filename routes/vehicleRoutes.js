@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const vehicleController = require('../controllers/vehicleController');
-const {isAuthenticated, isAdmin, isSocio} = require('../middlewares/authMiddleware');
+const {isAuthenticated, isSocio} = require('../middlewares/authMiddleware');
 
 // Endpoints de registro de entrada y salida de vehículos
 

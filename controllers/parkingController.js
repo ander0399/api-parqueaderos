@@ -61,10 +61,11 @@ exports.getParkingById = async (req, res) => {
 //actualizar un parqueadero
 exports.updateParking = async (req, res) => {
     try {
+        console.log("entramos a actualizar")
         const { id } = req.params;
         const { name, capacity, costPerHour } = req.body;
         const updatedParking = await parkingService.updateParking(id, name, capacity, costPerHour);
-        res.json(updatedParking);
+        res.status(201).json({ updatedParking });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -76,10 +77,7 @@ exports.deleteParking = async (req, res) => {
     try {
         const { id } = req.params;
         const deleted = await parkingService.deleteParking(id);
-        if (!deleted) {
-            return res.status(400).json({ message: 'Parqueadero no encontrado' });
-        }
-        res.status(201).json({ message: 'Parqueadero borrado correctamente' });
+        res.status(201).json({ deleted });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -89,10 +87,10 @@ exports.deleteParking = async (req, res) => {
 //asignar parqueadero a un socio
 exports.assignParkingToSocio = async (req, res) => {
     try {
-        const { userId } = req.body;
+        const { userEmail } = req.body;
         const { parkingId } = req.params;
-        const updatedParking = await parkingService.assignParkingToSocio(parkingId, userId);
-        res.status(201).json(updatedParking);
+        const updatedParking = await parkingService.assignParkingToSocio(parkingId, userEmail);
+        res.status(201).json({ updatedParking });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
