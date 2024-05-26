@@ -16,16 +16,9 @@ exports.findVehicleByLicensePlate = async (licensePlate) => {
     return await Vehicle.findOne({ where: { licensePlate } });
 };
 
-//obtener un vehiculo en un parqueadero con la placa
-exports.findVehicleByLicensePlateAndParkingId = async (licensePlate, parkingId) => {
-    return await Vehicle.findOne({ where: { licensePlate, parkingId } });
-  };
-  
-
 //salida de vehiculo (pendiente)
   exports.registerVehicleExit = async (vehicle) => {
-    // Mover el vehículo al historial con la fecha de salida
-    return await vehicle.destroy();
+    return await vehicle.destroy({where:{id:vehicle.id}});
   };
 
 //cantidad de vehiculos en un parqueadero

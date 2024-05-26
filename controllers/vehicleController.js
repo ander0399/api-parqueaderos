@@ -22,7 +22,6 @@ exports.registerVehicleEntry = async (req, res) => {
     const { licensePlate, parkingId } = req.body;
     console.log(licensePlate," ",parkingId)
     const registerVehicle = await vehicleService.registerVehicleEntry(licensePlate, parkingId);
-    console.log("vehiculo registrado: ",registerVehicle);
     res.status(201).json({ message: registerVehicle });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -30,13 +29,12 @@ exports.registerVehicleEntry = async (req, res) => {
 };
 
 
-
 //registrar salida de un vehiculo
 exports.registerVehicleExit = async (req, res) => {
   try {
     const { licensePlate, parkingId } = req.body;
     const vehicle = await vehicleService.registerVehicleExit(licensePlate, parkingId);
-    res.json({ message: 'Salida registrada', vehicle });
+    res.status(201).json({ message:  vehicle });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
