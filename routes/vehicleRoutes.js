@@ -10,7 +10,7 @@ const {isAuthenticated, isSocio} = require('../middlewares/authMiddleware');
 // (socio) registrar entrada de vehiculo
 router.post('/entry', isAuthenticated,isSocio, vehicleController.registerVehicleEntry); 
 // (socio) registrar salida de vehiculo
-router.post('/exit', isAuthenticated, isSocio, vehicleController.registerVehicleExit); 
+router.post('/exit',  vehicleController.registerVehicleExit); 
 
 
 module.exports = router;

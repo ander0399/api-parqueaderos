@@ -20,8 +20,10 @@ const vehicleService = require('../services/vehicleService');
 exports.registerVehicleEntry = async (req, res) => {
   try {
     const { licensePlate, parkingId } = req.body;
-    await vehicleService.registerVehicleEntry(licensePlate, parkingId);
-    res.status(201).json({ message: 'Registro de vehiculo exitoso' });
+    console.log(licensePlate," ",parkingId)
+    const registerVehicle = await vehicleService.registerVehicleEntry(licensePlate, parkingId);
+    console.log("vehiculo registrado: ",registerVehicle);
+    res.status(201).json({ message: registerVehicle });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

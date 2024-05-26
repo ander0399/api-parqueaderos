@@ -6,7 +6,7 @@ module.exports = (sequilize) => {
   sequilize.define('history', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     licensePlate: { type: DataTypes.STRING, allowNull: false },
-    entryTime: { type: DataTypes.TIME, allowNull: false },
-    exitTime: { type: DataTypes.TIME, allowNull: false }
+    entryTime: { type: DataTypes.DATE, allowNull: false },
+    exitTime: { type: DataTypes.DATE, allowNull: false }
   });
 }

@@ -3,7 +3,7 @@ const {Vehicle} = require('../config/db');
 
 //registrar vehiculo
 exports.registerVehicleEntry = async (licensePlate, parkingId, entryTime) => {
-    await Vehicle.create({ licensePlate,entryTime, parkingId });
+   return await Vehicle.create({ licensePlate,entryTime, parkingId});
   };
 
 //obtener vehiculo de un parqueadero

@@ -5,41 +5,34 @@ const historyRepository = require('../repositories/historyRepository');
 
 
 //Entrada de un vehiculo
-exports.registerVehicleEntry = async (req, res) => {
-    try {
-        const { licensePlate, parkingId } = req.body;
-        const entryTime = new Date().toTimeString().split(' ')[0];
-        console.log("hora actual: ", entryTime);
+exports.registerVehicleEntry = async (licensePlate, parkingId) => {
+        const entryTime = new Date();
 
         // Verificar si la placa ya está registrada en algún parqueadero
         const existingVehicle = await vehicleRepository.findVehicleByLicensePlate(licensePlate);
         if (existingVehicle) {
-             res.status(400).json({ message: 'Vehiculo ya esta en el parqueadero' });
+             return "No se puede Registrar Ingreso, ya existe la placa en este u otro parqueadero";
         }
 
         // Verificar si el parqueadero tiene capacidad disponible
-        const capacityAvailable = await parkingRepository.checkCapacityAvailable(parkingId);
-        if (!capacityAvailable) {
-            res.status(400).json({ message: 'parqueadero lleno' });
+        const parking = await parkingRepository.getParkingById(parkingId);
+        if (parking.capacity==0) {
+            return "parqueadero lleno";
         }
 
         // Verificar la longitud de la placa del vehículo
         if (licensePlate.length !== 6 || !licensePlate.match(/^[0-9a-zA-Z]+$/)) {
-            res.status(400).json({ message: 'Verifique la placa del vehiculo' });
+            return "Verifique la placa del vehiculo";
         }
 
         // Registrar la entrada del vehículo
-        await vehicleRepository.registerVehicleEntry(licensePlate, parkingId, entryTime);
+        const vehicleEntry = await vehicleRepository.registerVehicleEntry(licensePlate, parkingId, entryTime);
         await parkingRepository.decreaseParkingCapacity(parkingId);
-        res.status(201).json({ message: 'vehiculo registrado en el parqueadero' });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+        return vehicleEntry.id;
 };
 
 //salida de un vehiculo
 exports.registerVehicleExit = async (req, res) => {
-    try {
         const { licensePlate, parkingId } = req.body;
         const exitTime = new Date();
 
@@ -54,9 +47,6 @@ exports.registerVehicleExit = async (req, res) => {
         await vehicleRepository.registerVehicleExit(vehicle);
         await vehicleRepository.increaseParkingCapacity(parkingId);
         res.status(200).json({ message: 'El vehiculo ha salido del parqueadero' });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
 };
 
 

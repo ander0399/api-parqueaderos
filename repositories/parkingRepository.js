@@ -49,6 +49,6 @@ exports.getParkingsByUserId = async (userId) => {
 }
 
 //cupo en el parqueadero
-exports.checkCapacity = async (parkingId) => {
+exports.checkCapacityAvailable = async (parkingId) => {
     return await Parking.capacity;
 }

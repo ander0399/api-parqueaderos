@@ -12,11 +12,11 @@ router.get('/:userId/:parkingId', isAuthenticated, parkingController.getAllVehic
 // (admin) crear parqueadero
 router.post('/', isAuthenticated, isAdmin, parkingController.createParking);
 // (admin) actualizar parqueadero
-router.put('/:parkingId',isAuthenticated, isAdmin, parkingController.updateParking);
+router.put('/:parkingId', isAuthenticated, isAdmin, parkingController.updateParking);
 // (admin) borrar parqueadero
-router.delete('/:parkingId',isAuthenticated, isAdmin, parkingController.deleteParking);
+router.delete('/:parkingId', isAuthenticated, isAdmin, parkingController.deleteParking);
 // (admin) asignar parqueadero a socio
-router.post('/assign/:parkingId', parkingController.assignParkingToSocio);
+router.post('/assign/:parkingId', isAuthenticated, isAdmin, parkingController.assignParkingToSocio);
 
 
 module.exports = router;
