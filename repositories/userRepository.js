@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const { User } = require('../config/db');
 
 //obtener usuario por email
 exports.findByEmail = async (email) => {

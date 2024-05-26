@@ -6,6 +6,6 @@ module.exports = (sequilize) => {
   sequilize.define('vehicle', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     licensePlate: { type: DataTypes.STRING, allowNull: false, validate: { len: 6 } },
-    entryTime: { type: DataTypes.DATE, allowNull: false }
+    entryTime: { type: DataTypes.TIME, allowNull: false }
   });
 }

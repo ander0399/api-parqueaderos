@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
 const userRepository = require('../repositories/userRepository');
 
+
+//login de usuario
 exports.login = async (email, password) => {
     const user = await userRepository.findByEmail(email);
     if (!user) {
@@ -16,6 +18,8 @@ exports.login = async (email, password) => {
     return token;
 };
 
+
+//registrar socio
 exports.register = async (email, password, role) => {
     if(role != "SOCIO"){ throw new Error("Solo se pueden agregar Socios")}
     const hashedPassword = await bcrypt.hash(password, 10);

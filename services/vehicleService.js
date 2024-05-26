@@ -13,18 +13,18 @@ exports.registerVehicleEntry = async (req, res) => {
         // Verificar si la placa ya está registrada en algún parqueadero
         const existingVehicle = await vehicleRepository.findVehicleByLicensePlate(licensePlate);
         if (existingVehicle) {
-            throw new Error('Vehiculo ya esta en el parqueadero');
+            res.status(400).json({ message: 'Vehiculo ya esta en el parqueadero' });
         }
 
         // Verificar si el parqueadero tiene capacidad disponible
         const capacityAvailable = await parkingRepository.checkCapacityAvailable(parkingId);
         if (!capacityAvailable) {
-            throw new Error('parqueadero lleno');
+            res.status(400).json({ message: 'parqueadero lleno' });
         }
 
         // Verificar la longitud de la placa del vehículo
         if (licensePlate.length !== 6 || !licensePlate.match(/^[0-9a-zA-Z]+$/)) {
-            throw new Error('Verifique la placa del vehiculo');
+            res.status(400).json({ message: 'Verifique la placa del vehiculo' });
         }
 
         // Registrar la entrada del vehículo
@@ -45,7 +45,7 @@ exports.registerVehicleExit = async (req, res) => {
         // Verificar si el vehículo está registrado en el parqueadero
         const vehicle = await vehicleRepository.findVehicleByLicensePlateAndParkingId(licensePlate, parkingId);
         if (!vehicle) {
-            throw new Error('Vehiculo no encontrado en el parqueadero');
+            res.status(400).json({ message: 'Vehiculo no encontrado en el parqueadero' });
         }
 
         // Registrar la salida del vehículo y moverlo al historial

@@ -1,0 +1,158 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "email": "admin@mail.com",
+            "password": "$2b$10$gyMjJuFIM3w7urpxoTqLue.32eQhPd7B9hmdw3gp8VyJHqbnCEAPq",
+            "role": "ADMIN"
+        },
+        {
+            "id": 2,
+            "email": "socio1@mail.com",
+            "password": "$2b$10$rpkFOQvsw47P5gY4QXTYDe/eZpuP9DtVoMUiWoKqiIgbc4af1pLoO",
+            "role": "SOCIO"
+        },
+        {
+            "id": 3,
+            "email": "socio2@mail.com",
+            "password": "$2b$10$Fw2wKv75ml/FbgaFcO1Hq.70H2f9.vFYbgt0Zf3l0Zljgd8OVmRUS",
+            "role": "SOCIO"
+        },
+        {
+            "id": 4,
+            "email": "socio3@mail.com",
+            "password": "$2b$10$.0HyLyGD1C5t74LNcpA9JuEIX3MAJ/fNp8wSuUnKG0tPA0GYthRUy",
+            "role": "SOCIO"
+        }
+    ],
+    "vehicles": [
+        {
+            "id": 1,
+            "licensePlate": "CUX123",
+            "entryTime": "09:00:00",
+            "parkingId" : 1
+        },
+        {
+            "id": 2,
+            "licensePlate": "CUX234",
+            "entryTime": "09:30:00",
+            "parkingId" : 1
+        },
+        {
+            "id":3,
+            "licensePlate": "MLS123",
+            "entryTime": "10:00:00",
+            "parkingId" : 2
+        },
+        {
+            "id": 4,
+            "licensePlate": "MLS234",
+            "entryTime": "10:30:00",
+            "parkingId" : 2
+        },
+        {
+            "id": 5,
+            "licensePlate": "TLA123",
+            "entryTime": "11:00:00",
+            "parkingId" : 3
+        },
+        {
+            "id": 6,
+            "licensePlate": "TLA234",
+            "entryTime": "11:30:00",
+            "parkingId" : 3
+        },
+        {
+            "id": 7,
+            "licensePlate": "TLA456",
+            "entryTime": "12:00:00",
+            "parkingId" : 1
+        },
+        {
+            "id": 8,
+            "licensePlate": "MNP123",
+            "entryTime": "06:00:00",
+            "parkingId" : 3
+        }
+    ],
+    "history": [
+        {
+            "id": 8,
+            "licensePlate": "FDA123",
+            "entryTime": "08:00:00",
+            "exitTime" : "13:00:00",
+            "parkingId" : 1,
+            "vehicleId": 9
+        },
+        {
+            "id": 9,
+            "licensePlate": "FDA456",
+            "entryTime": "09:00:00",
+            "exitTime" : "13:00:00",
+            "parkingId" : 1,
+            "vehicleId": 10
+        },
+        {
+            "id": 10,
+            "licensePlate": "JPG123",
+            "entryTime": "10:00:00",
+            "exitTime" : "13:00:00",
+            "parkingId" : 2,
+            "vehicleId": 11
+        },
+        {
+            "id": 11,
+            "licensePlate": "JPG456",
+            "entryTime": "11:00:00",
+            "exitTime" : "13:00:00",
+            "parkingId" : 2,
+            "vehicleId": 13
+        },
+        {
+            "id": 12,
+            "licensePlate": "YKZ123",
+            "entryTime": "12:00:00",
+            "exitTime" : "13:00:00",
+            "parkingId" : 3,
+            "vehicleId": 14
+        },
+        {
+            "id": 13,
+            "licensePlate": "YKZ123",
+            "entryTime": "07:00:00",
+            "exitTime" : "13:00:00",
+            "parkingId" : 3,
+            "vehicleId": 15
+        }
+    ],
+    "parkings": [
+        {
+            "id": 1,
+            "name": "Parqueadero 1",
+            "capacity": "50",
+            "costPerHour": "2000",
+            "userId": 2
+           },
+           {
+            "id": 2,
+            "name": "Parqueadero 2",
+            "capacity": "40",
+            "costPerHour": "3000",
+            "userId": 2
+           },
+           {
+            "id": 3,
+            "name": "Parqueadero 3",
+            "capacity": "5",
+            "costPerHour": "2500",
+            "userId": 3
+           },
+           {
+            "id": 4,
+            "name": "Parqueadero 4",
+            "capacity": "100",
+            "costPerHour": "4000",
+            "userId": 4
+           }
+    ]
+}

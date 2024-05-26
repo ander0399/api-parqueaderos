@@ -44,8 +44,6 @@ Vehicle.belongsTo(Parking);
 Parking.hasMany(History);
 History.belongsTo(Parking);
 
-Vehicle.hasMany(History);
-History.belongsTo(Vehicle);
 
 module.exports = {
   ...db.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
