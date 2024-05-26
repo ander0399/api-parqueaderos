@@ -1,30 +1,60 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
+const verifyToken = require("../middlewares/verifyToken");
 
 
-//verificar si esta logueado el usuario
-exports.isAuthenticated = (req, res, next) => {
-  const token = req.headers['authorization'];
-  if (!token) return res.status(400).json({ message: 'Token no proporcionado' });
+//verificar token
+const isAuthenticated = async (req, res, next) => {
+  try {
+      const token = req.headers.authorization.split(" ")[1];
+      const tokenData = await verifyToken(token);
+      if (tokenData.id) {
+          req.userId = tokenData.id;
+          next();
+      } else {
+          res.status(400);
+          res.json({ error: '¡Tu por aqui no pasas!' });
+      }
+  } catch (e) {
+      res.status(400);
+      res.json({ error: '¡Tu por aqui no pasas!' });
+  }
+}
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.status(400).json({ message: 'Token inválido' });
-    req.userId = decoded.id;
-    req.userRole = decoded.role;
-    next();
-  });
-};
+// validar si es socio
+const isSocio = async (req, res, next) => {
+  try {
+      const token = req.headers.authorization.split(" ")[1];
+      const tokenData = await verifyToken(token);
+      if (tokenData.id) {
+          next();
+      } else {
+          res.status(400);
+          res.json({ message: '¡Tu por aqui no pasas, solo socios!' });
+      }
+  } catch (e) {
+      res.status(400);
+      res.json({ error: '¡Tu por aqui no pasas, solo socios!' });
+  }
+}
 
+// validar si es admin
+const isAdmin = async (req, res, next) => {
+  try {
+      const token = req.headers.authorization.split(" ")[1];
+      const tokenData = await verifyToken(token);
+      if (tokenData.id && tokenData.admin === true) {
+          next();
+      } else {
+          res.status(400);
+          res.json({ message: '¡Tu por aqui no pasas, solo admins!' });
+      }
+  } catch (e) {
+      res.status(400);
+      res.json({ error: '¡Tu por aqui no pasas, solo admins!' });
+  }
+}
 
-//verificar si es administrador
-exports.isAdmin = (req, res, next) => {
-  if (req.userRole !== 'ADMIN') return res.status(400).json({ message: 'Permiso denegado' });
-  next();
-};
-
-
-//verificar si es socio
-exports.isSocio = (req, res, next) => {
-  if (req.userRole !== 'SOCIO') return res.status(400).json({ message: 'Permiso denegado' });
-  next();
+module.exports = {
+  isAuthenticated,
+  isSocio,
+  isAdmin
 };
