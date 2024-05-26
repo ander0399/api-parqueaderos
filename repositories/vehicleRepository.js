@@ -1,5 +1,4 @@
-const Vehicle = require('../config/db');
-const Parking = require("../config/db");
+const {Vehicle} = require('../config/db');
 
 
 //registrar vehiculo

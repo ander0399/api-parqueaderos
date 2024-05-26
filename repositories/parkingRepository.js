@@ -1,4 +1,4 @@
-const Parking = require('../config/db');
+const {Parking} = require('../config/db');
 
 
 //crear un parqueadero
@@ -22,7 +22,7 @@ exports.updateParking = async (id, data) => {
     if (!parking) {
         return null;
     }
-    return await parking.update(data);
+    return await parking.update({name:data.name},{capacity:data.capacity},{costPerHour:data.costPerHour});
 };
 
 //borrar parqueadero
@@ -38,11 +38,11 @@ exports.deleteParking = async (id) => {
 exports.assignParkingToSocio = async (parkingId, userId) => {
     const parking = await parkingRepository.getParkingById(parkingId);
     if (!parking) {
-        throw new Error('Parqueadero no encontrado');
+        return 'Parqueadero no encontrado';
     }
     const user = await userRepository.getUserById(userId);
     if (!user || user.role !== 'SOCIO') {
-        throw new Error('Usuario no encontrado o no es un SOCIO');
+        return 'Usuario no encontrado o no es un SOCIO';
     }
     parking.userId = userId;
     await parking.save();

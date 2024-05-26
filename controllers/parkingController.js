@@ -18,13 +18,13 @@ exports.getAllParkings = async (req, res) => {
     try {
         const { userId } = req.params;
         const user = await authService.userById(userId);
-        const parkings = 0;
+        let parkings = 0;
         if (user.role == "SOCIO") {
             parkings = await parkingService.getParkingsByUserId(userId);
         } else {
             parkings = await parkingService.getAllParkings();
         }
-        res.status(201).json(parkings);
+        res.status(201).json({ parkings });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -33,15 +33,18 @@ exports.getAllParkings = async (req, res) => {
 //obtener todos los vehiculos de un parqueadero
 exports.getAllVehicles = async (req, res) => {
     try {
-      const { userId,parkingId } = req.params;
-      const user = await authService.userById(userId);
-      const vehicles = 0;
-          vehicles = await vehicleService.getVehiclesByParkingId(parkingId);
-      res.status(201).json(vehicles);
-  } catch (error) {
-      res.status(400).json({ message: error.message });
-  }
-  };
+        const { userId, parkingId } = req.params;
+        const parking = await parkingService.getParkingById(parkingId);
+        if (userId == parking.userId) {
+            const vehicles = await vehicleService.getVehiclesByParkingId(parkingId);
+            res.status(201).json({ vehicles });
+        } else {
+            res.status(400).json({ message: "no tienes acceso a este parqueadero" })
+        }
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
 
 //obtener un parqueadero por id
 exports.getParkingById = async (req, res) => {
