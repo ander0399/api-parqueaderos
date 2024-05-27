@@ -1,10 +1,10 @@
 # api-parqueaderos
 ## Objetivos del Proyecto
 
--Construir una Api Rest con nodejs y posgrest.
--Afirmar y conectar los conceptos aprendidos.
--Aprender mejores prácticas.
--Aprender y practicar el workflow de GIT.
+- Construir una Api Rest con nodejs y posgrest.
+- Afirmar y conectar los conceptos aprendidos.
+- Aprender mejores prácticas.
+- Aprender y practicar el workflow de GIT.
 
 ## Ejecutar API
 
