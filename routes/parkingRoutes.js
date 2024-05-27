@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const parkingController = require('../controllers/parkingController');
-const { isAuthenticated, isAdmin } = require('../middlewares/authMiddleware');
+const { isAuthenticated, isAdmin, isSocio } = require('../middlewares/authMiddleware');
 
 // Endpoints CRUD de parqueaderos
 
@@ -17,6 +17,8 @@ router.put('/:parkingId', isAuthenticated, isAdmin, parkingController.updatePark
 router.delete('/:parkingId', isAuthenticated, isAdmin, parkingController.deleteParking);
 // (admin) asignar parqueadero a socio
 router.post('/assign/:parkingId', isAuthenticated, isAdmin, parkingController.assignParkingToSocio);
+// (socio) obtener ganancias
+router.get('/:userId/:parkingId/earnings', isAuthenticated, isSocio, parkingController.getEarnings);
 
 
 module.exports = router;
