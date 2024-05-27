@@ -1,7 +1,7 @@
 # api-parqueaderos
 ## Objetivos del Proyecto
 
-- Construir una Api Rest con nodejs y posgrest.
+- Construir una Api Rest con nodejs y postgres.
 - Afirmar y conectar los conceptos aprendidos.
 - Aprender mejores prácticas.
 - Aprender y practicar el workflow de GIT.
@@ -21,7 +21,7 @@ PORT=3000
 ```
 Reemplazar `youruser`, `yourpassword`, `dbname`, `yoursecret` con tus propias credenciales para conectarte a la base de datos. Este archivo va ser ignorado en la subida a github, ya que contiene información sensible (las credenciales).
 
-Adicionalmente será necesario que creen una base de datos posgrest con el nombre que deseen.
+Adicionalmente será necesario que creen una base de datos postgres con el nombre que deseen.
 
 Vamos a instalar todas las dependencias usando `npm` sobre la carpeta `api-parqueadero`:
 
