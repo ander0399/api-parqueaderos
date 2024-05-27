@@ -13,7 +13,7 @@ exports.createParking = async (req, res) => {
     }
 };
 
-//obtener todos los parqueaderos de un socio o un admin
+//obtener todos los parqueaderos de un socio o un admin puede ver todos los parqueaderos
 exports.getAllParkings = async (req, res) => {
     try {
         const { userId } = req.params;
@@ -30,17 +30,22 @@ exports.getAllParkings = async (req, res) => {
     }
 };
 
-//obtener todos los vehiculos de un parqueadero
+//obtener todos los vehiculos de un parqueadero asignados a un socio o un admin puede ver todos los vehiculos
 exports.getAllVehicles = async (req, res) => {
     try {
         const { userId, parkingId } = req.params;
         const parking = await parkingService.getParkingById(parkingId);
-        if (userId == parking.userId) {
-            const vehicles = await vehicleService.getVehiclesByParkingId(parkingId);
-            res.status(201).json({ vehicles });
+        const user = await authService.userById(userId);
+        let vehicles = 0;
+        if (user.role == "SOCIO" && parking.userId == userId) {
+            vehicles = await vehicleService.getVehiclesByParkingId(parkingId);
         } else {
-            res.status(400).json({ message: "no tienes acceso a este parqueadero" })
+            if (user.role == "ADMIN") {
+                vehicles = await vehicleService.getVehiclesByParkingId(parkingId);
+            }
+            res.status(201).json({ vehicles });
         }
+        res.status(400).json({ message: "no tienes acceso a este parqueadero" })
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
