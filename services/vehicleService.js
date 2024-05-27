@@ -36,13 +36,20 @@ exports.registerVehicleExit = async (licensePlate, parkingId) => {
     const exitTime = new Date();
 
     // Verificar si el vehículo está registrado en el parqueadero
-    console.log("placa ", licensePlate)
     const vehicle = await vehicleRepository.findVehicleByLicensePlate(licensePlate);
-    console.log("vehiculo ", vehicle)
     if (vehicle) {
         if (vehicle.parkingId == parkingId) {
+            // Calcular el tiempo total de estacionamiento
+            const entryTime = new Date(vehicle.entryTime);
+            const totalTime = (exitTime - entryTime) / 3600000; // tiempo total en horas
+
+            // Obtener la tarifa del parqueadero
+            const parking = await parkingRepository.getParkingById(parkingId);
+            const costPerHour = parking.costPerHour;
+            const paidTotal = totalTime * costPerHour;
+            const paid = Math.ceil(paidTotal);
             // Registrar la salida del vehículo y moverlo al historial
-            await historyRepository.createHistory(licensePlate, vehicle.entryTime, exitTime, parkingId);
+            await historyRepository.createHistory(licensePlate, vehicle.entryTime, exitTime, paid, parkingId);
             await vehicleRepository.registerVehicleExit(vehicle);
             await parkingRepository.increaseParkingCapacity(parkingId);
             return 'Salida registrada';
@@ -65,3 +72,23 @@ exports.getVehicleDetailByParkingId = async (parkingId, vehicleId) => {
 };
 
 
+// Los 10 vehículos que más veces se han registrado en los diferentes parqueaderos y cuantas veces han sido
+exports.getTopVehicles = async () => {
+    return await historyRepository.getTopVehicles();
+}
+
+// los 10 vehículos que más veces se han registrado en un parqueadero y cuantas veces han sido
+exports.getTopVehicles = async (parkingId) => {
+    return await historyRepository.getTopVehiclesParking(parkingId);
+}
+
+
+// verificar de los vehículos parqueados cuales son por primera vez en ese parqueadero
+exports.getFirstTimeParkedVehicles = async (parkingId) => {
+    return await vehicleRepository.getFirstTimeParkedVehicles(parkingId);
+}
+
+// Buscar vehículos parqueados mediante coincidencia en la placa
+exports.searchParkedVehicles = async (query) => {
+    return await vehicleRepository.searchParkedVehicles(query);
+}

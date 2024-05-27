@@ -39,11 +39,12 @@ exports.getAllVehicles = async (req, res) => {
         let vehicles = 0;
         if (user.role == "SOCIO" && parking.userId == userId) {
             vehicles = await vehicleService.getVehiclesByParkingId(parkingId);
-        } else {
-            if (user.role == "ADMIN") {
-                vehicles = await vehicleService.getVehiclesByParkingId(parkingId);
-            }
-            res.status(201).json({ vehicles });
+            return res.status(201).json({ vehicles });
+        }
+
+        if (user.role == "ADMIN") {
+            vehicles = await vehicleService.getVehiclesByParkingId(parkingId);
+            return res.status(201).json({ vehicles });
         }
         res.status(400).json({ message: "no tienes acceso a este parqueadero" })
     } catch (error) {
@@ -66,10 +67,9 @@ exports.getParkingById = async (req, res) => {
 //actualizar un parqueadero
 exports.updateParking = async (req, res) => {
     try {
-        console.log("entramos a actualizar")
-        const { id } = req.params;
+        const { parkingId } = req.params;
         const { name, capacity, costPerHour } = req.body;
-        const updatedParking = await parkingService.updateParking(id, name, capacity, costPerHour);
+        const updatedParking = await parkingService.updateParking(parkingId, name, capacity, costPerHour);
         res.status(201).json({ updatedParking });
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -80,8 +80,8 @@ exports.updateParking = async (req, res) => {
 //Borrar un parqueadero por id
 exports.deleteParking = async (req, res) => {
     try {
-        const { id } = req.params;
-        const deleted = await parkingService.deleteParking(id);
+        const { parkingId } = req.params;
+        const deleted = await parkingService.deleteParking(parkingId);
         res.status(201).json({ deleted });
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -113,3 +113,24 @@ exports.getParkingsByUserId = async (req, res) => {
 };
 
 
+// obtener ganancias
+exports.getEarnings = async (req, res) => {
+    try {
+        console.log("entramos")
+        const { parkingId } = req.params;
+        console.log(parkingId)
+        const dailyEarnings = await parkingService.getDailyEarnings(parkingId);
+        console.log("ganancias dia: ", dailyEarnings)
+          const weeklyEarnings = await parkingService.getWeeklyEarnings(parkingId);
+          const monthlyEarnings = await parkingService.getMonthlyEarnings(parkingId);
+          const yearlyEarnings = await parkingService.getYearlyEarnings(parkingId);
+        res.status(201).json({
+            ganancias_hoy: dailyEarnings,
+            ganancias_semana: weeklyEarnings,
+            ganancias_mes: monthlyEarnings,
+            ganancias_anio: yearlyEarnings
+        });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+}

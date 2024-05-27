@@ -1,6 +1,7 @@
 const parkingRepository = require('../repositories/parkingRepository');
 const userRepository = require('../repositories/userRepository');
 const vehicleRepository = require("../repositories/vehicleRepository");
+const historyRepository = require("../repositories/historyRepository");
 
 
 //crear un parqueadero
@@ -26,9 +27,9 @@ exports.getParkingById = async (id) => {
 };
 
 //actualizar un parqueadero
-exports.updateParking = async (id, name, capacity, costPerHour) => {
-  if (id && name && capacity && costPerHour) {
-    let parking = await parkingRepository.getParkingById(id);
+exports.updateParking = async (parkingId, name, capacity, costPerHour) => {
+  if (parkingId && name && capacity && costPerHour) {
+    let parking = await parkingRepository.getParkingById(parkingId);
     parking.name = name;
     parking.capacity = capacity;
     parking.costPerHour = costPerHour;
@@ -83,4 +84,21 @@ exports.checkCapacityAvailable = async (parkingId) => {
   return await parkingRepository.checkCapacity(parkingId);
 };
 
+// ganancias dia
+exports.getDailyEarnings = async (parkingId) => {
+  return await historyRepository.getDailyEarnings(parkingId);
+}
+// ganancias semana
+exports.getWeeklyEarnings = async (parkingId) => {
+  return await historyRepository.getWeeklyEarnings(parkingId);
+}
 
+// ganancias mes
+exports.getMonthlyEarnings = async (parkingId) => {
+  return await historyRepository.getMonthlyEarnings(parkingId);
+}
+
+// ganancias año
+exports.getYearlyEarnings = async (parkingId) => {
+  return await historyRepository.getYearlyEarnings(parkingId);
+}
